@@ -1,0 +1,67 @@
+<div class="card">
+  <h5 class="card-header">댓글:</h5>
+  {% for comment in comments %}
+  <div class="card-body">
+    {% if comment.is_deleted %}
+    <p>삭제된 댓글입니다</p>
+    {% else %}
+    <p>{{ comment.author.username }} : {{ comment.text }}</p>
+    {% endif %}
+
+    <div class="btn-group float-right" role="group" aria-label="Basic example">
+      <div>
+        <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#create_reply{{ comment.pk }}" role="button"
+          aria-expanded="false" aria-controls="create_reply">
+          답글
+        </a>
+      </div>
+
+      {% if comment.author == user %}
+      <div>
+        <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#update_comment{{ comment.pk }}" role="button"
+          aria-expanded="false" aria-controls="update_comment">
+          수정
+        </a>
+      </div>
+
+      <div>
+        <form method="POST" action="{% url 'delete_comment' comment.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-secondary btn-sm">삭제</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 답글 달기를 눌렀을 때 출력되는 입력폼-->
+    <div class="collapse" id="create_reply{{ comment.pk }}">
+      <div class="card card-body">
+        <form method="POST" action="{% url 'create_comment' event.pk comment.pk %}">
+          {% csrf_token %}
+          <textarea name="text" style="width: 100%;"></textarea>
+          <button type="submit" class="btn btn-success btn-sm">완료</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 답글 수정을 눌렀을 때 출력되는 입력폼-->
+    <div class="collapse" id="update_comment{{ comment.pk }}">
+      <div class="card card-body">
+        <form method="POST" action="{% url 'update_comment' comment.pk %}">
+          {% csrf_token %}
+          <textarea name="text"></textarea>
+          <button type="submit" class="btn btn-success btn-sm">완료</button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+    
+
+    <!-- 윤수의 야심작: 재귀처리
+  {% if comment.comment_set %}
+    <ul>
+      {% include "component_comment.html" with comments=comment.comment_set.all %}
+    </ul>
+  {% endif %}
+    -->
+  </div>
+  {% endfor %}

@@ -1,0 +1,147 @@
+{% extends './base.html' %}
+{% block main_area %}
+
+{% for event in events %}
+<!-- Photo Card -->
+<div class="col">
+  <div class="card shadow-sm">
+    {% if event.head_image %}
+    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img"
+      aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <title>Placeholder</title>
+      <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+    </svg>
+    {% else %}
+    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img"
+      aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <title>Placeholder</title>
+      <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+    </svg>
+    {% endif %}
+    <div class="card-body">
+      {% if event.category %}
+      <span class="badge badge-secondary float-right">{{ event.category }}</span>
+      {% else %}
+      <span class="badge badge-secondary float-right">미분류</span>
+      {% endif %}
+      <p class="card-text">{{ event.description }}</p>
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="btn-group">
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#detailModal{{event.pk}}">View</button>
+          {% if user == event.host %}
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editModal{{event.pk}}">Edit</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#deleteModal{{event.pk}}">Delete</button>
+          {% endif %}
+        </div>
+        <small class="text-muted">{{ event.created_at }}</small>
+        {% if event.created_at|date:"YmdHis" != event.updated_at|date:"YmdHis" %}
+        <small class="text-muted">수정됨</small>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- detail modal -->
+<div class="modal fade" id="detailModal{{event.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ event.title }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ event.description }}
+        <div class="border">
+          {% include 'component_comment.html' with comments=event.comment_set_heads %}
+        </div>
+        <form method="POST" action="{% url 'create_comment' event.pk 0 %}">
+          {% csrf_token %}
+          <textarea name="text"></textarea>
+          <button type="submit">버튼</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- edit modal -->
+<div class="modal fade" id="editModal{{event.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="{% url 'update_event' event.pk %}" method="POST">
+        {% csrf_token %}
+        <div class="modal-header">
+          {{ event.form.title }}
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {{ event.form.category }}
+          {{ event.form.description }}
+          {{ event.form.start_at }}
+          {{ event.form.end_at }}
+          {{ event.form.max_number }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- delete modal -->
+<div class="modal fade" id="deleteModal{{event.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">정말로 삭제하시겠습니까?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ event.description }}
+      </div>
+      <div class="modal-footer">
+        <form action="{% url 'delete_event' event.pk %}" method="POST">
+          {% csrf_token %}
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">삭제하기</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% if is_paginated %}
+<!-- Pagination -->
+<ul class="pagination justify-content-center mb-4">
+  {% if page_obj.has_previous %}
+  <li class="page-item">
+    <a class="page-link" href="?page_obj.previous_page_number">&larr; 이전</a>
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#">&larr; 이전</a>
+  </li>
+  {% endif %}
+
+  {% if page_obj.has_next %}
+  <li class="page-item">
+    <a class="page-link" href="?page={{ page_obj.next_page_number }}">다음 &rarr;</a>
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#">다음 &rarr;</a>
+  </li>
+  {% endif %}
+</ul>
+{% endif %}
+
+
+{% endblock %}
+
+

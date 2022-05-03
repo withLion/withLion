@@ -1,0 +1,60 @@
+{% for comment in comments %}
+<div>
+  {% if comment.is_deleted %}
+  <p>
+    삭제된 댓글입니다
+  </p>
+  {% else %}
+  {{ comment.time_created }}<br>
+  {{ comment.time_updated }}
+  <p>
+    {{ comment.author.username }} : {{ comment.text }}
+    {% if comment.time_created|date:"YmdHis" != comment.time_updated|date:"YmdHis" %}
+    수정됨
+    {% endif %}
+  </p>
+  <p>
+    <a class="btn btn-primary" data-toggle="collapse" href="#create_reply{{ comment.pk }}" role="button"
+      aria-expanded="false" aria-controls="create_reply">
+      답글달기
+    </a>
+  </p>
+  <div class="collapse" id="create_reply{{ comment.pk }}">
+    <div class="card card-body">
+      <form method="POST" action="{% url 'create_comment' event.pk comment.pk %}">
+        {% csrf_token %}
+        <textarea name="text"></textarea>
+        <button type="submit">버튼</button>
+      </form>
+    </div>
+  </div>
+  {% if comment.author == user %}
+  <p>
+    <a class="btn btn-primary" data-toggle="collapse" href="#update_comment{{ comment.pk }}" role="button"
+      aria-expanded="false" aria-controls="update_comment">
+      수정하기
+    </a>
+  </p>
+  <div class="collapse" id="update_comment{{ comment.pk }}">
+    <div class="card card-body">
+      <form method="POST" action="{% url 'update_comment' comment.pk %}">
+        {% csrf_token %}
+        <textarea name="text"></textarea>
+        <button type="submit">버튼</button>
+      </form>
+    </div>
+  </div>
+  <form method="POST" action="{% url 'delete_comment' comment.pk %}">
+    {% csrf_token %}
+    <button type="submit">삭제</button>
+  </form>
+  {% endif %}
+  {% endif %}
+  {% if comment.comment_set %}
+  <ul>
+    {% include "component_comment.html" with comments=comment.comment_set.all %}
+  </ul>
+  {% endif %}
+  </li>
+</div>
+{% endfor %}

@@ -1,0 +1,158 @@
+{% load static %}
+{% load crispy_forms_tags %} 
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>{% block head_title %}당신은 멋사이십니까?{% endblock %}</title>
+    <!-- link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/album/" -->
+    <script src="https://kit.fontawesome.com/53bee35fbd.js" crossorigin="anonymous"></script>
+    
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static './css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      body {
+          position: relative;
+          width:100vw;
+      }
+
+      .wrap {
+        height: 100vh;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: url('{% static './images/likelion.png' %}');
+        background-position: center;
+      }
+
+      .blind {
+        border: 0; clip: rect(0 0 0 0); clip-path: inset(50%); width: 1px; height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; white-space: nowrap;
+      }
+
+      .img-box {
+        background: url('{% static './images/areyou.png' %}');
+        width: 100%;
+        height: 70vh;
+        margin: 0 auto;
+        
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;    
+      }
+
+      .img-background {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+      }
+
+      .container {
+          position: relative;
+          z-index: 10;
+      }
+
+      .text-box {
+        text-align: center;
+      }
+
+      input[type="submit" i] {
+        background: none;
+        border: none;
+        background-image: url('{% static './images/enter-btn.png' %}');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 20vw;
+        height: 100%;
+      }
+
+      .input-box {
+          position: relative;
+          max-width: 540px;
+          margin: 0 auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+
+      .submit-btn {
+          position: absolute;
+          
+      }
+
+      .input-area {
+            width: 40vw;
+          background: #FFFFFF;
+          height: 6vh;
+          border-radius: 30px;
+          
+      }
+
+      input[type="text" i] {
+          width: 100%;
+          height: 100%;
+        padding: 10px;
+        border: none;
+        background: transparent;
+        border-radius: 30px;
+        text-align: center;
+        font-size: 1.8rem;
+        }
+
+
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+        <div class="container">
+            <div class="row g-3 align-items-center">
+                <div class="img-box">
+                <label for="inputPassword6" class="col-form-label"><div class="img-text"></div><span class="blind">당신은 멋사이십니까? 이름을 입력해주세요.</span></label>
+                </div>
+                <div class="text-box">
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <div class="input-box">
+                            <div class="input-area">
+                                <input type="text" name="username">
+                                <input type="submit" value="" class="submit-btn">
+                            </div>
+                            
+                        </div>
+                    </form>
+                </div>
+                <div class="col-auto">
+                <span id="LoginHelpInline" class="form-text">
+                </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
