@@ -70,22 +70,20 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{ event.title }}</h5>
+        <h5 class="modal-title" id="exampleModalLabel">{{ event.title }} by {{ event.host }}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         {{ event.description|linebreaksbr }}
-        <div>
-          <p>
-            참가 인원 : {{event.count_participants}} / {{ event.max_number }}
-            참가자
-          </p>
-          <p>
-            시작시간 : {{event.start_at}}
-            {% if event.end_at %}
-            종료시간 : {{event.end_at}}
-            {% endif %}
-          </p>
+        <div class="border">
+          시작시간 : {{ event.start_at|date:"Y-m-d, g:i A" }}
+          {% if event.end_at %}
+          <br>
+          종료시간 : {{ event.end_at|date:"Y-m-d, g:i A" }}
+          {% endif %}
+        </div>
+        <div class="border align-items-center">
+          참가 인원 : {{event.count_participants}} / {{ event.max_number }}
           <ol>
             {% for participant in event.participant.all %}
             <li>
