@@ -48,12 +48,12 @@
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
           <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
-            data-bs-target="#detailModal{{event.pk}}">View</button>
+            data-bs-target="#detailModal{{event.pk}}">보기</button>
           {% if user == event.host %}
           <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
-            data-bs-target="#editModal{{event.pk}}">Edit</button>
+            data-bs-target="#editModal{{event.pk}}">수정</button>
           <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
-            data-bs-target="#deleteModal{{event.pk}}">Delete</button>
+            data-bs-target="#deleteModal{{event.pk}}">종료</button>
           {% endif %}
         </div>
         {% if event.created_at|date:"YmdHis" != event.updated_at|date:"YmdHis" %}
@@ -104,7 +104,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
         {% if not user == event.host %}
         {% if user in event.participant.all %}
         <form action="{% url 'quit_event' event.pk %}" method="POST">
@@ -133,19 +133,34 @@
       <form action="{% url 'update_event' event.pk %}" method="POST">
         {% csrf_token %}
         <div class="modal-header">
-          {{ event.form.title }}
+          <div class="event-title">
+            <span>제목: </span>{{ event.form.title }}
+          </div>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          {{ event.form.category }}
-          {{ event.form.description }}
-          {{ event.form.start_at }}
-          {{ event.form.end_at }}
-          {{ event.form.max_number }}
+          <div class="event-cate">
+            <span>카테고리: </span>{{ event.form.category }}
+          </div>
+          
+          <div class="event-text">
+            {{ event.form.description }}
+          </div>
+
+          <div class="event-start event-date">
+            {{ event.form.start_at }}
+          </div>
+          <div class="event-end event-date">
+            {{ event.form.end_at }}
+          </div>
+
+          <div class="event-number">
+            <span>참여인원: </span>{{ event.form.max_number }}
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          <button type="submit" class="btn btn-primary">저장</button>
         </div>
       </form>
     </div>
@@ -157,17 +172,17 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">정말로 삭제하시겠습니까?</h5>
+        <h5 class="modal-title" id="exampleModalLabel">정말로 이벤트를 종료하시겠습니까?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         {{ event.description }}
       </div>
       <div class="modal-footer">
-        <form action="{% url 'delete_event' event.pk %}" method="POST">
+        <form action="{% url 'close_event' event.pk %}" method="POST">
           {% csrf_token %}
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">삭제하기</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          <button type="submit" class="btn btn-primary">종료하기</button>
         </form>
       </div>
     </div>

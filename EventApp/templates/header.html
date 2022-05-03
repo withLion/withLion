@@ -11,14 +11,15 @@
           </p>
         </div>
         <div class="col-sm-4 offset-md-1 py-4">
-          <h4 class="text-white">Category</h4>
           {% if user.is_authenticated %}
+          {% comment %} <h4 class="text-white">Category</h4>
           <ul class="list-unstyled">
             <li><a href="#" class="text-white">Study</a></li>
             <li><a href="#" class="text-white">Eat</a></li>
             <li><a href="#" class="text-white">Play</a></li>
-          </ul>
+          </ul> 
           <hr/>
+          {% endcomment %}
           <h4 class="text-white">Who You Are</h4>
           <a href="{% url 'logout' %}">
             <p class="text-white">{{ user.username }}</p>

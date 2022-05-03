@@ -42,7 +42,7 @@ class EventListView(LoginRequiredMixin, ListView):
         'start_at': event.start_at,
         'end_at': event.end_at,
         'max_number': event.max_number,
-        'is_hidden': event.is_hidden,
+        'is_closed': event.is_closed,
       })
     context['form'] = EventForm(initial={
       'max_number': 5, #일단 기본값은 5명으로

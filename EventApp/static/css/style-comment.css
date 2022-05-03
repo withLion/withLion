@@ -90,3 +90,35 @@ button.btn-comment {
     padding: 0.3rem;
     box-sizing: border-box;
 }
+
+
+
+/* event_list */
+
+/* event_modal */
+
+
+.event-title {
+
+}
+
+.event-cate {
+    text-align: left;
+}
+
+.event-text textarea{
+    width: 100%;
+    margin: 10px 0;
+}
+
+.event-date {
+    margin: 10px 0;
+}
+
+.event-number {
+    text-align: left;
+}
+
+.event-number input {
+    width: 30px;
+}

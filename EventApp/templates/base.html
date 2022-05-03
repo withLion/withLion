@@ -4,10 +4,16 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.88.1">
+    <meta name="description" content="같이 공부하자">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="🦁Play LIKE LION🐯">
+    <meta property="og:description" content="🙌같이 놀 멋사 어디 없나요~??">
+    <meta property="og:image" content="http://withlion.pythonanywhere.com/static/images/background.jpeg"/>
+    <meta property="og:image:width" content="640" />
+    <meta property="og:image:height" content="360" />
+    <meta property="og:url" content="http://withlion.pythonanywhere.com/">
     <title>{% block head_title %}Event{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'images/lion.ico' %}">
     <!-- link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/album/" -->
     <script src="https://kit.fontawesome.com/53bee35fbd.js" crossorigin="anonymous"></script>
     
@@ -58,19 +64,35 @@
               <form action="{% url 'create_event' %}" method="POST">
                 {% csrf_token %}
                 <div class="modal-header">
-                  {{ form.title }}
+                  <div class="event-title">
+                    <span>제목: </span>{{ form.title }}
+                  </div>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  {{ form.category }}
-                  {{ form.description }}
-                  {{ form.start_at }}
-                  {{ form.end_at }}
-                  {{ form.max_number }}
+                  <div class="event-cate">
+                    <span>카테고리: </span>{{ form.category }}
+                  </div>
+
+                  <div class="event-text">
+                    {{ form.description }}
+                  </div>
+
+                  <div class="event-start event-date">
+                    {{ form.start_at }}
+                  </div>
+
+                  <div class="event-end event-date">
+                    {{ form.end_at }}
+                  </div>
+
+                  <div class="event-number">
+                    <span>참여인원: </span>{{ form.max_number }}
+                  </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                  <button type="submit" class="btn btn-primary">저장</button>
                 </div>
               </form>
             </div>
