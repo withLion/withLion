@@ -20,7 +20,9 @@
           </ul>
           <hr/>
           <h4 class="text-white">Who You Are</h4>
-          <p class="text-white">{{ user.username }}</p>
+          <a href="{% url 'logout' %}">
+            <p class="text-white">{{ user.username }}</p>
+          </a>
           {% else %}
           <h4 class="text-white"><a href="#" class="text-white"><i class="fa-solid fa-right-to-bracket"></i>&nbsp; Log In</a></h4>
           {% endif %}

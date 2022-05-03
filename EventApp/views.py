@@ -44,7 +44,9 @@ class EventListView(LoginRequiredMixin, ListView):
         'max_number': event.max_number,
         'is_hidden': event.is_hidden,
       })
-    context['form'] = EventForm()
+    context['form'] = EventForm(initial={
+      'max_number': 5, #일단 기본값은 5명으로
+    })
     context['hosting_events'] = self.request.user.host_event_set.all().order_by('start_at')
     context['participating_events'] = self.request.user.participant_event_set.all().order_by('start_at')
     context['categories'] = Category.objects.all().order_by('name')

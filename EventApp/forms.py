@@ -9,4 +9,5 @@ class EventForm(forms.ModelForm):
     widgets = {
       'start_at': forms.DateTimeInput(format=('%Y-%m-%dT%H:%M'), attrs={'class':'form-control', 'type':'datetime-local'}),
       'end_at': forms.DateTimeInput(format=('%Y-%m-%dT%H:%M'), attrs={'class':'form-control', 'type':'datetime-local'}),
+      'max_number': forms.NumberInput(attrs={'min':'2'}),
     }

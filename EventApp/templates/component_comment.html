@@ -19,15 +19,6 @@
       답글달기
     </a>
   </p>
-  <div class="collapse" id="create_reply{{ comment.pk }}">
-    <div class="card card-body">
-      <form method="POST" action="{% url 'create_comment' event.pk comment.pk %}">
-        {% csrf_token %}
-        <textarea name="text"></textarea>
-        <button type="submit">버튼</button>
-      </form>
-    </div>
-  </div>
   {% if comment.author == user %}
   <p>
     <a class="btn btn-primary" data-toggle="collapse" href="#update_comment{{ comment.pk }}" role="button"
@@ -35,15 +26,6 @@
       수정하기
     </a>
   </p>
-  <div class="collapse" id="update_comment{{ comment.pk }}">
-    <div class="card card-body">
-      <form method="POST" action="{% url 'update_comment' comment.pk %}">
-        {% csrf_token %}
-        <textarea name="text"></textarea>
-        <button type="submit">버튼</button>
-      </form>
-    </div>
-  </div>
   <form method="POST" action="{% url 'delete_comment' comment.pk %}">
     {% csrf_token %}
     <button type="submit">삭제</button>
@@ -56,5 +38,25 @@
   </ul>
   {% endif %}
   </li>
+</div>
+
+<!--collapse-->
+<div class="collapse" id="create_reply{{ comment.pk }}">
+  <div class="card card-body">
+    <form method="POST" action="{% url 'create_comment' event.pk comment.pk %}">
+      {% csrf_token %}
+      <textarea name="text"></textarea>
+      <button type="submit">버튼</button>
+    </form>
+  </div>
+</div>
+<div class="collapse" id="update_comment{{ comment.pk }}">
+  <div class="card card-body">
+    <form method="POST" action="{% url 'update_comment' comment.pk %}">
+      {% csrf_token %}
+      <textarea name="text"></textarea>
+      <button type="submit">버튼</button>
+    </form>
+  </div>
 </div>
 {% endfor %}
