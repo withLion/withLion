@@ -63,6 +63,9 @@ class Event(models.Model):
 
   def count_comments(self):
     return self.comment_set.all().count()
+
+  def count_participants(self):
+    return self.participant.all().count()
   
 
 class Comment(models.Model): #댓글

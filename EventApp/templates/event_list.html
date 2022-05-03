@@ -5,6 +5,7 @@
 <!-- Photo Card -->
 <div class="col">
   <div class="card shadow-sm">
+    <!--
     {% if event.head_image %}
     <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img"
       aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -18,6 +19,22 @@
       <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
     </svg>
     {% endif %}
+    -->
+    <div class="card-head">
+      <p>
+        {{ event.title }}
+        by {{ event.host.username }}
+      </p>
+      {% if user == event.host %}
+      <p>
+        내 이벤트!
+      </p>
+      {% elif user in event.participant.all %}
+      <p>
+        참여중!
+      </p>
+      {% endif %}
+    </div>
     <div class="card-body">
       {% if event.category %}
       <span class="badge badge-secondary float-right">{{ event.category }}</span>
@@ -27,10 +44,13 @@
       <p class="card-text">{{ event.description }}</p>
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#detailModal{{event.pk}}">View</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+            data-bs-target="#detailModal{{event.pk}}">View</button>
           {% if user == event.host %}
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editModal{{event.pk}}">Edit</button>
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#deleteModal{{event.pk}}">Delete</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+            data-bs-target="#editModal{{event.pk}}">Edit</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+            data-bs-target="#deleteModal{{event.pk}}">Delete</button>
           {% endif %}
         </div>
         <small class="text-muted">{{ event.created_at }}</small>
@@ -43,7 +63,8 @@
 </div>
 
 <!-- detail modal -->
-<div class="modal fade" id="detailModal{{event.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="detailModal{{event.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -51,7 +72,20 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        {{ event.description }}
+        {{ event.description|linebreaksbr }}
+        <div>
+          <p>
+            참가 인원 : {{event.count_participants}} / {{ event.max_number }}
+            참가자
+          </p>
+          <ol>
+          {% for participant in event.participant.all %}
+          <li>
+            {{ participant.username }}
+          </li>
+          {% endfor %}
+          </ol>
+        </div>
         <div class="border">
           {% include 'component_comment.html' with comments=event.comment_set_heads %}
         </div>
@@ -63,7 +97,23 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        {% if not user == event.host %}
+        {% if user in event.participant.all %}
+        <form action="{% url 'quit_event' event.pk %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary">나가기</button>
+        </form>
+        {% else %}
+        {% if event.max_number > event.count_participants %}
+        <form action="{% url 'join_event' event.pk %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary">참가</button>
+        </form>
+        {% else %}
+        <button class="btn btn-primary" disabled>인원제한</button>
+        {% endif %}
+        {% endif %}
+        {% endif %}
       </div>
     </div>
   </div>
@@ -94,7 +144,8 @@
   </div>
 </div>
 <!-- delete modal -->
-<div class="modal fade" id="deleteModal{{event.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal{{event.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -143,5 +194,3 @@
 
 
 {% endblock %}
-
-
