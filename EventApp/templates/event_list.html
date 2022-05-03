@@ -53,7 +53,7 @@
           <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
             data-bs-target="#editModal{{event.pk}}">수정</button>
           <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
-            data-bs-target="#deleteModal{{event.pk}}">종료</button>
+            data-bs-target="#deleteModal{{event.pk}}">종료</button>
           {% endif %}
         </div>
         {% if event.created_at|date:"YmdHis" != event.updated_at|date:"YmdHis" %}
