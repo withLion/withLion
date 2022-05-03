@@ -47,8 +47,8 @@ class Event(models.Model):
   created_at = models.DateTimeField(auto_now_add = True) #event 등록 시간
   updated_at = models.DateTimeField(auto_now = True) #event 업데이트 시간
 
-  is_hidden = models.BooleanField(default=False)
-  #숨기고 싶다면?
+  is_closed = models.BooleanField(default=False)
+  #종료하고 싶다면?
   def __str__(self):
     return f'[{self.pk}] {self.title} :: {self.host}'
 

@@ -45,6 +45,7 @@ urlpatterns = [
   path('create_event/', createEvent, name='create_event'),
   path('update_event/<int:event_pk>/', updateEvent, name='update_event'),
   path('delete_event/<int:event_pk>/', deleteEvent, name='delete_event'),
+  path('close_event/<int:event_pk>/', closeEvent, name='close_event'),
   path('create_comment/<int:event_pk>/<int:comment_pk>/', createComment, name='create_comment'),
   path('update_comment/<int:comment_pk>/', updateComment, name='update_comment'),
   path('delete_comment/<int:comment_pk>/', deleteComment, name='delete_comment'),

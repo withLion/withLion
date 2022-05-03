@@ -92,6 +92,14 @@ def updateEvent(request, event_pk):
   return redirect('home')
 
 @login_required(login_url='login')
+def closeEvent(request, event_pk):
+  if request.method == 'POST':
+    event = Event.objects.filter(pk=event_pk)[0]
+    event.is_closed = True
+    event.save()
+  return redirect('home')
+
+@login_required(login_url='login')
 def deleteEvent(request, event_pk):
   if request.method == 'POST':
     event = Event.objects.filter(pk=event_pk)[0]

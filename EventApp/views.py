@@ -30,7 +30,7 @@ class EventListView(LoginRequiredMixin, ListView):
 
   def get_context_data(self, **kwargs):
     context = super(EventListView, self).get_context_data()
-    context['events'] = Event.objects.all().order_by('start_at')
+    context['events'] = Event.objects.filter(is_closed=False).order_by('start_at')
     for event in context['events']:
       event.form = EventForm(initial={
         'host': event.host,
