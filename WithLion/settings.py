@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'WithLion.urls'
+ROOT_URLCONF = 'withLion.urls'
 
 TEMPLATES = [
     {
@@ -88,7 +88,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'WithLion.wsgi.application'
+WSGI_APPLICATION = 'withLion.wsgi.application'
 
 
 # Database
@@ -138,6 +138,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 
 # 미디어 파일을 관리할 루트 media 디렉터리
 MEDIA_ROOT = os.path.join(BASE_DIR, '_media/')
