@@ -7,3 +7,4 @@ pipenv shell<br>
 pipenv install django==4.0.4<br>
 pipenv install django-markdownx<br>
 pipenv install django-crispy-forms<br>
+pipenv install pillow<br>
