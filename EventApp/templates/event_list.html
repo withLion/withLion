@@ -20,28 +20,31 @@
     </svg>
     {% endif %}
     -->
-    <div class="card-head">
-      <p>
+    <div class="card-body d-flex justify-content-between align-items-center">
+      <h5 class="inline">
         {{ event.title }}
         by {{ event.host.username }}
-      </p>
-      {% if user == event.host %}
-      <p>
+      </h5>
+      <h5 class="inline">
+        {% if user == event.host %}
+        <span class="badge bg-secondary float-right">
         내 이벤트!
-      </p>
-      {% elif user in event.participant.all %}
-      <p>
+        </span>
+        {% elif user in event.participant.all %}
+        <span class="badge bg-secondary float-right">
         참여중!
-      </p>
-      {% endif %}
+        </span>
+        {% endif %}
+      </h5>
     </div>
     <div class="card-body">
       {% if event.category %}
-      <span class="badge badge-secondary float-right">{{ event.category }}</span>
+      <span class="badge bg-secondary float-right">{{ event.category }}</span>
       {% else %}
-      <span class="badge badge-secondary float-right">미분류</span>
+      <span class="badge bg-secondary float-right">미분류</span>
       {% endif %}
-      <p class="card-text">{{ event.description }}</p>
+      <p class="card-text">{{ event.description|linebreaksbr }}</p>
+      <small class="text-muted">{{ event.start_at|date:"Y-m-d, g:i A" }} 시작!</small>
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
           <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
@@ -53,7 +56,6 @@
             data-bs-target="#deleteModal{{event.pk}}">Delete</button>
           {% endif %}
         </div>
-        <small class="text-muted">{{ event.created_at }}</small>
         {% if event.created_at|date:"YmdHis" != event.updated_at|date:"YmdHis" %}
         <small class="text-muted">수정됨</small>
         {% endif %}
@@ -78,12 +80,18 @@
             참가 인원 : {{event.count_participants}} / {{ event.max_number }}
             참가자
           </p>
+          <p>
+            시작시간 : {{event.start_at}}
+            {% if event.end_at %}
+            종료시간 : {{event.end_at}}
+            {% endif %}
+          </p>
           <ol>
-          {% for participant in event.participant.all %}
-          <li>
-            {{ participant.username }}
-          </li>
-          {% endfor %}
+            {% for participant in event.participant.all %}
+            <li>
+              {{ participant.username }}
+            </li>
+            {% endfor %}
           </ol>
         </div>
         <div class="border">
