@@ -99,8 +99,10 @@
         </div>
         <form method="POST" action="{% url 'create_comment' event.pk 0 %}">
           {% csrf_token %}
-          <textarea name="text"></textarea>
-          <button type="submit">버튼</button>
+          <div class="text-box">
+            <textarea name="text" class="text-area"></textarea>
+            <button type="submit">등록</button>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
