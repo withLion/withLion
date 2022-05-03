@@ -1,8 +1,9 @@
 # withLion
 withLion-project
 
+초반 자기 컴퓨터에서 세팅해야할 것
 
-
-pipenv install django==4.0.4
-pipenv install django-markdownx
-pipenv install django-crispy-forms
+pipenv shell<br>
+pipenv install django==4.0.4<br>
+pipenv install django-markdownx<br>
+pipenv install django-crispy-forms<br>
