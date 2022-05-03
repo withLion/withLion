@@ -2,6 +2,23 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import Event, Comment, Tag, Category
 
+### event 참가
+@login_required(login_url='login')
+def joinEvent(request, event_pk):
+  if request.method == 'POST':
+    event = Event.objects.filter(pk=event_pk)[0]
+    if not request.user in event.participant.all():
+      event.participant.add(request.user)
+    print(event.participant.all())
+  return redirect('home')
+### event 불참
+def quitEvent(request, event_pk):
+  if request.method == 'POST':
+    event = Event.objects.filter(pk=event_pk)[0]
+    if request.user in event.participant.all():
+      event.participant.remove(request.user)
+  return redirect('home')
+
 ### category
 @login_required(login_url='login')
 def createCategory(request):
