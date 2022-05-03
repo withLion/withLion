@@ -1,5 +1,5 @@
 {% for comment in comments %}
-<div>
+<div class="comment-wrap">
   {% if comment.is_deleted %}
   <p>
     삭제된 댓글입니다
@@ -13,25 +13,28 @@
     수정됨
     {% endif %}
   </p>
-  <p>
-    <a class="btn btn-primary" data-toggle="collapse" href="#create_reply{{ comment.pk }}" role="button"
-      aria-expanded="false" aria-controls="create_reply">
-      답글달기
-    </a>
-  </p>
-  {% if comment.author == user %}
-  <p>
-    <a class="btn btn-primary" data-toggle="collapse" href="#update_comment{{ comment.pk }}" role="button"
-      aria-expanded="false" aria-controls="update_comment">
-      수정하기
-    </a>
-  </p>
-  <form method="POST" action="{% url 'delete_comment' comment.pk %}">
-    {% csrf_token %}
-    <button type="submit">삭제</button>
-  </form>
+  <div class="comment-box">
+    <p>
+      <a class="btn btn-primary btn-comment" data-toggle="collapse" href="#create_reply{{ comment.pk }}" role="button"
+        aria-expanded="false" aria-controls="create_reply">
+        답글달기
+      </a>
+    </p>
+    {% if comment.author == user %}
+    <p>
+      <a class="btn btn-primary btn-comment" data-toggle="collapse" href="#update_comment{{ comment.pk }}" role="button"
+        aria-expanded="false" aria-controls="update_comment">
+        수정하기
+      </a>
+    </p>
+    <form method="POST" action="{% url 'delete_comment' comment.pk %}">
+      {% csrf_token %}
+      <button type="submit" class="btn-comment">삭제</button>
+    </form>
+  
   {% endif %}
   {% endif %}
+  </div>
   {% if comment.comment_set %}
   <ul>
     {% include "component_comment.html" with comments=comment.comment_set.all %}
