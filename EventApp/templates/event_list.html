@@ -215,5 +215,13 @@
 </ul>
 {% endif %}
 
+<script type="text/javascript"> <!-- url이 detail/event_pk로 전달되었을떄 해당 이벤트를 열어주는 스크립트-->
+  window.onload = function () {
+      OpenBootstrapPopup();
+  };
+  function OpenBootstrapPopup() {
+      $("#detailModal{{ event_pk }}").modal('show');
+  }
+</script>
 
 {% endblock %}

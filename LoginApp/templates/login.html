@@ -144,6 +144,9 @@
                         {% csrf_token %}
                         <div class="input-box">
                             <div class="input-area">
+                                {% if request.GET.next %}
+                                <input type="hidden" name="next" value="{{ request.GET.next }}">
+                                {% endif %}
                                 <input type="text" name="username">
                                 <input type="submit" value="" class="submit-btn">
                             </div>

@@ -9,19 +9,20 @@ def login(request):
         username = request.POST['username']
         password = 'likelion'
         user = auth.authenticate(request, username=username, password=password)
-        if user is not None:
-            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('home')
-        else:
-            user = User.objects.create_user(
+        
+        if user is None: 
+          User.objects.create_user(
                 username = username,
                 password = password,
             )
-            user.save()
-            user = auth.authenticate(request, username=username, password=password)
-            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('home')
-            #함수 빼내서 좀더 예쁘게 바꿀것
+          user = auth.authenticate(request, username=username, password=password)
+    
+        auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+      
+        if 'next' in request.POST: #login이후에 리다이렉트가 된다면 next로 받는다(login.html에 <input type="hidden"> 참고)
+          return redirect(request.POST['next'])
+        return redirect('home')
+
     else:
         return render(request, 'login.html')
 

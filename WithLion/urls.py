@@ -27,6 +27,7 @@ urlpatterns = [
 # path('markdownx/', include('markdownx.urls')),
 
   path('', login_required(EventListView.as_view(), login_url='login'), name='home'),
+  path('detail/<int:event_pk>/', login_required(EventListView.as_view(), login_url='login'), name='detail'),
 
   #event join, quit
   path('join_event/<int:event_pk>/', joinEvent, name='join_event'),
