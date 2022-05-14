@@ -27,6 +27,7 @@ urlpatterns = [
 # path('markdownx/', include('markdownx.urls')),
 
   path('', login_required(EventListView.as_view(), login_url='login'), name='home'),
+  path('detail/<int:event_pk>/', login_required(EventListView.as_view(), login_url='login'), name='detail'),
 
   #event join, quit
   path('join_event/<int:event_pk>/', joinEvent, name='join_event'),
@@ -49,6 +50,10 @@ urlpatterns = [
   path('create_comment/<int:event_pk>/<int:comment_pk>/', createComment, name='create_comment'),
   path('update_comment/<int:comment_pk>/', updateComment, name='update_comment'),
   path('delete_comment/<int:comment_pk>/', deleteComment, name='delete_comment'),
+
+  #user email
+  path('update_email/', updateEmail, name='updateEmail'),
+  path('delete_email/', deleteEmail, name='deleteEmail'),
 
   #login
   path('login/', login, name='login'),

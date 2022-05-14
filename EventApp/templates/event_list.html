@@ -75,6 +75,8 @@
       </div>
       <div class="modal-body">
         {{ event.description|linebreaksbr }}
+        <br><br>
+        http://withlion.pythonanywhere.com/detail/{{event.pk}}
         <div class="border">
           시작시간 : {{ event.start_at|date:"Y-m-d, g:i A" }}
           {% if event.end_at %}
@@ -95,13 +97,15 @@
         <div class="border">
           {% include 'component_comment.html' with comments=event.comment_set_heads %}
         </div>
-        <form method="POST" action="{% url 'create_comment' event.pk 0 %}">
-          {% csrf_token %}
-          <div class="text-box">
-            <textarea name="text" class="text-area"></textarea>
-            <button type="submit">등록</button>
-          </div>
-        </form>
+        <div class="card card-body">
+          <form method="POST" action="{% url 'create_comment' event.pk 0 %}">
+            {% csrf_token %}
+            <div class="text-box">
+              <input type="text" class="text-area" name="text" placeholder="댓글을 입력하세요" required/>
+              <button type="submit" class="btn btn-primary">등록</button>
+            </div>
+          </form>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -215,5 +219,13 @@
 </ul>
 {% endif %}
 
+<script type="text/javascript"> <!-- url이 detail/event_pk로 전달되었을떄 해당 이벤트를 열어주는 스크립트-->
+  window.onload = function () {
+      OpenBootstrapPopup();
+  };
+  function OpenBootstrapPopup() {
+      $("#detailModal{{ event_pk }}").modal('show');
+  }
+</script>
 
 {% endblock %}

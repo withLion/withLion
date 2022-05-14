@@ -51,6 +51,11 @@ class EventListView(LoginRequiredMixin, ListView):
     context['participating_events'] = self.request.user.participant_event_set.all().order_by('start_at')
     context['categories'] = Category.objects.all().order_by('name')
     context['tags'] = Tag.objects.all().order_by('name')
+    if 'event_pk' in self.kwargs: #처음부터 어느 페이지를 보여주고 싶을때. url에서 /detail/event_pk로 호출될경우 이 구문이 추가로 작동됨
+      context['event_pk'] = self.kwargs['event_pk']
+    else:
+      context['event_pk'] = 0
+    print(context['event_pk'])
     return context
 
 '''

@@ -85,12 +85,16 @@ button.btn-comment {
 }
 
 .text-area {
-    width: 100%;
+    /* width: 50%; */
     height: 100%;
     padding: 0.3rem;
     box-sizing: border-box;
+    flex-grow: 1;
 }
 
+.text-box .btn {
+  flex-basis: content;
+}
 
 
 /* event_list */

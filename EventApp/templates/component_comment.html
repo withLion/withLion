@@ -4,7 +4,7 @@
   {{ comment.time_updated }}
   <p class="main-comment">
     {% if comment.is_deleted %}
-      삭제된 댓글입니다
+    삭제된 댓글입니다
     {% else %}
     <span>{{ comment.author.username }}</span> : {{ comment.text }}
     {% endif %}
@@ -32,8 +32,31 @@
       <button type="submit" class="btn-comment">삭제</button>
     </form>
     {% endif %}
-  
-  {% endif %}
+
+    {% endif %}
+  </div>
+  <!--collapse-->
+  <div class="collapse add indent" id="create_reply{{ comment.pk }}">
+    <div class="card card-body">
+      <form method="POST" action="{% url 'create_comment' event.pk comment.pk %}">
+        {% csrf_token %}
+        <div class="text-box">
+          <input type="text" class="text-area" name="text" placeholder="답글을 입력하세요" required/>
+          <button type="submit" class="btn btn-primary">등록</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="collapse edit" id="update_comment{{ comment.pk }}">
+    <div class="card card-body">
+      <form method="POST" action="{% url 'update_comment' comment.pk %}">
+        {% csrf_token %}
+        <div class="text-box">
+          <input type="text" class="text-area" name="text" value="{{ comment.text }}" required/>
+          <button type="submit" class="btn btn-primary">수정</button>
+        </div>
+      </form>
+    </div>
   </div>
   {% if comment.comment_set %}
   <ul>
@@ -43,27 +66,5 @@
   </li>
 </div>
 
-<!--collapse-->
-<div class="collapse add indent" id="create_reply{{ comment.pk }}">
-  <div class="card card-body">
-    <form method="POST" action="{% url 'create_comment' event.pk comment.pk %}">
-      {% csrf_token %}
-      <div class="text-box">
-        <textarea class="text-area" name="text" placeholder="답글을 입력하세요"></textarea>
-        <button type="submit">등록</button>
-      </div>
-    </form>
-  </div>
-</div>
-<div class="collapse edit" id="update_comment{{ comment.pk }}">
-  <div class="card card-body">
-    <form method="POST" action="{% url 'update_comment' comment.pk %}">
-      {% csrf_token %}
-      <div class="text-box">
-        <textarea name="text" class="text-area">{{ comment.text }}</textarea>
-        <button type="submit">수정</button>
-      </div>
-    </form>
-  </div>
-</div>
+
 {% endfor %}
