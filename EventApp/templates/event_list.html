@@ -75,6 +75,8 @@
       </div>
       <div class="modal-body">
         {{ event.description|linebreaksbr }}
+        <br><br>
+        http://withlion.pythonanywhere.com/detail/{{event.pk}}
         <div class="border">
           시작시간 : {{ event.start_at|date:"Y-m-d, g:i A" }}
           {% if event.end_at %}
