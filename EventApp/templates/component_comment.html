@@ -49,8 +49,8 @@
     <form method="POST" action="{% url 'create_comment' event.pk comment.pk %}">
       {% csrf_token %}
       <div class="text-box">
-        <textarea class="text-area" name="text" placeholder="답글을 입력하세요"></textarea>
-        <button type="submit">등록</button>
+        <input type="text" class="text-area" name="text" placeholder="답글을 입력하세요" />
+        <button type="submit" class="btn btn-primary">등록</button>
       </div>
     </form>
   </div>
@@ -60,8 +60,8 @@
     <form method="POST" action="{% url 'update_comment' comment.pk %}">
       {% csrf_token %}
       <div class="text-box">
-        <textarea name="text" class="text-area">{{ comment.text }}</textarea>
-        <button type="submit">수정</button>
+        <input type="text" class="text-area" name="text" value="{{ comment.text }}" />
+        <button type="submit" class="btn btn-primary">수정</button>
       </div>
     </form>
   </div>

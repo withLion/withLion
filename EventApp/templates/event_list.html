@@ -95,13 +95,15 @@
         <div class="border">
           {% include 'component_comment.html' with comments=event.comment_set_heads %}
         </div>
-        <form method="POST" action="{% url 'create_comment' event.pk 0 %}">
-          {% csrf_token %}
-          <div class="text-box">
-            <textarea name="text" class="text-area"></textarea>
-            <button type="submit">등록</button>
-          </div>
-        </form>
+        <div class="card card-body">
+          <form method="POST" action="{% url 'create_comment' event.pk 0 %}">
+            {% csrf_token %}
+            <div class="text-box">
+              <input type="text" class="text-area" name="text" placeholder="댓글을 입력하세요"/>
+              <button type="submit" class="btn btn-primary">등록</button>
+            </div>
+          </form>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
