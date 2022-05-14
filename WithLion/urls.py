@@ -51,6 +51,10 @@ urlpatterns = [
   path('update_comment/<int:comment_pk>/', updateComment, name='update_comment'),
   path('delete_comment/<int:comment_pk>/', deleteComment, name='delete_comment'),
 
+  #user email
+  path('update_email/', updateEmail, name='updateEmail'),
+  path('delete_email/', deleteEmail, name='deleteEmail'),
+
   #login
   path('login/', login, name='login'),
   path('logout/', logout, name='logout'),

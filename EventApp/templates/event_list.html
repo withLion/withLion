@@ -101,7 +101,7 @@
           <form method="POST" action="{% url 'create_comment' event.pk 0 %}">
             {% csrf_token %}
             <div class="text-box">
-              <input type="text" class="text-area" name="text" placeholder="댓글을 입력하세요"/>
+              <input type="text" class="text-area" name="text" placeholder="댓글을 입력하세요" required/>
               <button type="submit" class="btn btn-primary">등록</button>
             </div>
           </form>

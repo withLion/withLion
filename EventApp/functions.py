@@ -145,3 +145,18 @@ def deleteComment(request, comment_pk):
     return redirect('detail', event_pk)
 
   return redirect('home')
+
+
+# email 관리
+@login_required(login_url='login')
+def updateEmail(request):
+  if request.method == 'POST':
+    request.user.email = request.POST['email']
+    request.user.save()
+  return redirect('home')
+
+@login_required(login_url='login')
+def deleteEmail(request):
+  request.user.email = ''
+  request.user.save()
+  return redirect('home')

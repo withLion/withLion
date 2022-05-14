@@ -63,6 +63,12 @@
             -->
             <p>
               <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createModal">이벤트 생성</button>
+              {% if user.email %}
+              <br>
+              <a href="#"><button type="button" class="btn btn-comment" data-bs-toggle="modal" data-bs-target="#emailModal">{{ user.email }}</button></a>
+              {% else %}
+              <a href="#"><button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#emailModal">알림 받기!</button></a>
+              {% endif %}
             </p>
           </div>
         </div>
@@ -100,6 +106,35 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                  <button type="submit" class="btn btn-primary">저장</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div><div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form action="{% url 'updateEmail' %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                  <div class="event-title">
+                    이메일을 입력해주세요
+                  </div>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <span>새로운 이벤트가 생성되면 메일을 보내드릴게요!</span>
+                  <br><br>
+                  <label for="email">메일주소: </label>
+                  <input type="email" name="email" class="text-area" value="{{ user.email }}" required/>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                  {% if user.email %}
+                  <a href="{% url 'deleteEmail' %}">
+                    <button type="button" class="btn btn-danger">삭제</button>
+                  </a>
+                  {% endif %}
                   <button type="submit" class="btn btn-primary">저장</button>
                 </div>
               </form>
