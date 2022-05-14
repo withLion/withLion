@@ -65,17 +65,17 @@ def createEvent(request):
   if request.method == 'POST':
     title = request.POST['title']
     description = request.POST['description']
-    email_list = []
+    
     for user in User.objects.all():
       if user.email:
-        email_list.append(user.email)
-    email = EmailMessage(
-      title,                # 제목
-      description,       # 내용
-      'toyoalsrl@likelion.org',     # 보내는 이메일 (settings에서 설정해서 작성안해도 됨)
-      to=email_list,  # 받는 이메일 리스트
-    )
-    email.send()
+        email = EmailMessage(
+          title,                # 제목
+          description,       # 내용
+          'toyoalsrl@likelion.org',     # 보내는 이메일 (settings에서 설정해서 작성안해도 됨)
+          to=[user.email],  # 받는 이메일 리스트
+        )
+        email.send()
+    
     new_event = Event.objects.create(
       host = request.user,
       title = request.POST['title'],

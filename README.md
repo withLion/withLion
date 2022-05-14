@@ -10,3 +10,4 @@ pipenv install django-crispy-forms<br>
 pipenv install pillow<br>
 pipenv install djangorestframework<br>
 pipenv install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib<br>
+pipenv install django-allauth<br>
