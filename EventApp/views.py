@@ -7,6 +7,10 @@ from django.core.exceptions import PermissionDenied
 from django.utils.text import slugify
 from django.shortcuts import get_object_or_404
 from .forms import *
+from django.core.mail import EmailMessage
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 # Create your views here.
 """
@@ -94,3 +98,15 @@ def tag_page(request, slug):
     }
   )
 '''
+
+class MailView(APIView):
+    def post(self, request, format=None):
+        email = request.data['email']
+        if email is not None:
+            subject = 'Django를 통해 발송된 메일입니다.'
+            message = 'Google SMTP에서 발송되었습니다.'
+            mail = EmailMessage(subject, message, to=[email])
+            mail.send()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

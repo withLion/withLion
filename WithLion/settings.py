@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$&cjyp$rl-fyma!$b*g01r418o-w$g4$vi%j_a5p$6b&kk6p%a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['.pythonanywhere.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -42,8 +42,27 @@ INSTALLED_APPS = [
     'crispy_forms',
     'LoginApp',
     'EventApp',
+    'rest_framework',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.IsAdminUser',
+    ],
+    'PAGE_SIZE': 10
+}
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'toyoalsrl@likelion.org' # ex) bum752@gmail.com
+EMAIL_HOST_PASSWORD = '52371951' # ex) P@ssw0rd
+SERVER_EMAIL = 'toyoalsrl@likelion.org' # ex) bum752@gmail.com
+DEFAULT_FROM_MAIL = 'withLion' # ex) bum752
 
 #MARKDOWNX_MARKDOWN_EXTENSIONS = [
 #    'markdown.extensions.codehilite',

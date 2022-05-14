@@ -1,6 +1,8 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import Event, Comment, Tag, Category
+from django.core.mail import EmailMessage
+from django.contrib.auth.models import User
 
 ### event 참가
 @login_required(login_url='login')
@@ -61,6 +63,19 @@ def deleteTag(request, tag_pk):
 @login_required(login_url='login')
 def createEvent(request):
   if request.method == 'POST':
+    title = request.POST['title']
+    description = request.POST['description']
+    email_list = []
+    for user in User.objects.all():
+      if user.email:
+        email_list.append(user.email)
+    email = EmailMessage(
+      title,                # 제목
+      description,       # 내용
+      'toyoalsrl@likelion.org',     # 보내는 이메일 (settings에서 설정해서 작성안해도 됨)
+      to=email_list,  # 받는 이메일 리스트
+    )
+    email.send()
     new_event = Event.objects.create(
       host = request.user,
       title = request.POST['title'],
