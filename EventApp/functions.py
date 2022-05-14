@@ -10,14 +10,14 @@ def joinEvent(request, event_pk):
     if not request.user in event.participant.all():
       event.participant.add(request.user)
     print(event.participant.all())
-  return redirect('home')
+  return redirect('detail', event_pk)
 ### event 불참
 def quitEvent(request, event_pk):
   if request.method == 'POST':
     event = Event.objects.filter(pk=event_pk)[0]
     if request.user in event.participant.all():
       event.participant.remove(request.user)
-  return redirect('home')
+  return redirect('detail', event_pk)
 
 ### category
 @login_required(login_url='login')
@@ -74,6 +74,7 @@ def createEvent(request):
     if request.POST['end_at']:
       new_event.end_at = request.POST['end_at']
       new_event.save()
+    return redirect('detail', new_event.pk)
   return redirect('home')
 
 @login_required(login_url='login')
@@ -89,6 +90,7 @@ def updateEvent(request, event_pk):
       event.end_at = request.POST['end_at']
     event.max_number = request.POST['max_number']
     event.save()
+    return redirect('detail', event.pk)
   return redirect('home')
 
 @login_required(login_url='login')
@@ -117,7 +119,8 @@ def createComment(request, event_pk, comment_pk):
                          event=Event.objects.filter(
                            pk=event_pk)[0],
                          comment_linked=None,
-                         text=request.POST['text'])
+                         text=request.POST['text'])     
+    return redirect('detail', event_pk)              
   return redirect('home')
 
 
@@ -127,6 +130,7 @@ def updateComment(request, comment_pk):
     comment = Comment.objects.filter(pk=comment_pk)[0]
     comment.text = request.POST['text']
     comment.save()
+    return redirect('detail', comment.event.pk)
   return redirect('home')
 
 
@@ -134,8 +138,10 @@ def updateComment(request, comment_pk):
 def deleteComment(request, comment_pk):
   if request.method == 'POST':
     comment = Comment.objects.filter(pk=comment_pk)[0]
+    event_pk = comment.event.pk
     comment.is_deleted = True
     comment.save()
     comment.get_head().clear_branch()
+    return redirect('detail', event_pk)
 
   return redirect('home')
