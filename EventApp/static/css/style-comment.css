@@ -92,6 +92,9 @@ button.btn-comment {
     flex-grow: 1;
 }
 
+.text-box .btn {
+  flex-basis: content;
+}
 
 
 /* event_list */
