@@ -65,9 +65,9 @@
               <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createModal">이벤트 생성</button>
               {% if user.email %}
               <br>
-              <a href="#"><button type="button" class="btn btn-comment" data-bs-toggle="modal" data-bs-target="#emailModal">{{ user.email }}</button></a>
+              <button type="button" class="btn btn-comment" data-bs-toggle="modal" data-bs-target="#emailModal">{{ user.email }}</button>
               {% else %}
-              <a href="#"><button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#emailModal">알림 받기!</button></a>
+              <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#emailModal">알림 받기!</button>
               {% endif %}
             </p>
           </div>
