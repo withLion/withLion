@@ -69,13 +69,25 @@ REST_FRAMEWORK = {
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+password_file = os.path.join(BASE_DIR, 'password.json')
+with open(password_file) as f:
+    passwords = json.loads(f.read())
+
+def get_password(setting, secrets=passwords):
+    try:
+        return passwords[setting]
+    except KeyError:
+        error_msg = "Set the {} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
+
+PASSWORD_MAIL = get_password("password_KEY")
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'toyoalsrl@likelion.org' # ex) bum752@gmail.com
-EMAIL_HOST_PASSWORD = '52371951' # ex) P@ssw0rd
+EMAIL_HOST_PASSWORD = PASSWORD_MAIL # ex) P@ssw0rd
 SERVER_EMAIL = 'toyoalsrl@likelion.org' # ex) bum752@gmail.com
 DEFAULT_FROM_MAIL = 'withLion' # ex) bum752
 
