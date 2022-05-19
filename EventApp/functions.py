@@ -179,6 +179,19 @@ def updateEmail(request):
   if request.method == 'POST':
     request.user.email = request.POST['email']
     request.user.save()
+    title = f'[멋사랑] 이메일이 등록되었습니다.'
+    host = request.user
+    description = '[본 메일은 멋사랑에서 발송된 메일입니다.]\n'
+    description += f'{host}님의 아이디에 메일이 등록되었습니다.\n'
+    description += f'내용: 지속적으로 [멋사랑]의 알림을 받길 원하신다면,\n스펨 메일 등록을 해체해주세요!\n'
+    description += '더 이상 이메일을 발송받기 원하지 않는다면,\n멋사랑홈페이지에서 등록된 이벤트를 클릭하여 삭제해주세요\n'
+    email = EmailMessage(
+      title,                # 제목
+      description,       # 내용
+      'toyoalsrl@likelion.org',     # 보내는 이메일 (settings에서 설정해서 작성안해도 됨)
+      to=[request.POST['email']],  # 받는 이메일 리스트
+    )
+    email.send()
   return redirect('home')
 
 @login_required(login_url='login')

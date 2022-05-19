@@ -39,9 +39,9 @@ SECRET_KEY = get_secret("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.pythonanywhere.com']
 
 
 # Application definition
