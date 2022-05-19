@@ -8,6 +8,12 @@ Pipfile.lock
 Pipfile.lock
 pipfile.lock
 password.json
+gmail-sec.py
+Gmail.py
+google-api.py
+manage.py
+prac.py
+quickstart.py
 
 # Created by https://www.toptal.com/developers/gitignore/api/django
 # Edit at https://www.toptal.com/developers/gitignore?templates=django
