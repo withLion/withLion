@@ -1,6 +1,8 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import Event, Comment, Tag, Category
+from django.core.mail import EmailMessage
+from django.contrib.auth.models import User
 
 ### event 참가
 @login_required(login_url='login')
@@ -61,6 +63,8 @@ def deleteTag(request, tag_pk):
 @login_required(login_url='login')
 def createEvent(request):
   if request.method == 'POST':
+    
+    
     new_event = Event.objects.create(
       host = request.user,
       title = request.POST['title'],
@@ -71,6 +75,28 @@ def createEvent(request):
 #      end_at = request.POST['end_at'],
       max_number = request.POST['max_number']
     )
+    title_post = request.POST['title']
+    title = f'[멋사랑] 새로운 이벤트가 생성되었어요'
+    host = request.user
+    category = Category.objects.filter(pk=request.POST['category'])[0]
+    description = '[본 메일은 멋사랑에서 발송된 메일입니다.]\n'
+    description += '[새로운 이벤트가 생성되었어요.]\n'
+    description += f'{host}님께서 작성하신 메일입니다.\n'
+    description += f'제목: {title_post}\n'
+    description += f'이벤트 카테고리: {category}\n'
+    description += f'내용:'
+    description += request.POST['description']
+    description += f'\nhttp://withlion.pythonanywhere.com/detail/{new_event.pk}\n'
+    description += '더 이상 이메일을 발송받기 원하지 않는다면, 멋사랑홈페이지에서 등록된 이벤트를 클릭하여 삭제해주세요\n'
+    for user in User.objects.all():
+      if user.email:
+        email = EmailMessage(
+          title,                # 제목
+          description,       # 내용
+          'toyoalsrl@likelion.org',     # 보내는 이메일 (settings에서 설정해서 작성안해도 됨)
+          to=[user.email],  # 받는 이메일 리스트
+        )
+        email.send()
     if request.POST['end_at']:
       new_event.end_at = request.POST['end_at']
       new_event.save()
@@ -153,6 +179,19 @@ def updateEmail(request):
   if request.method == 'POST':
     request.user.email = request.POST['email']
     request.user.save()
+    title = f'[멋사랑] 이메일이 등록되었습니다.'
+    host = request.user
+    description = '[본 메일은 멋사랑에서 발송된 메일입니다.]\n'
+    description += f'{host}님의 아이디에 메일이 등록되었습니다.\n'
+    description += f'내용: 지속적으로 [멋사랑]의 알림을 받길 원하신다면,\n스펨 메일 등록을 해체해주세요!\n'
+    description += '더 이상 이메일을 발송받기 원하지 않는다면,\n멋사랑홈페이지에서 등록된 이벤트를 클릭하여 삭제해주세요\n'
+    email = EmailMessage(
+      title,                # 제목
+      description,       # 내용
+      'toyoalsrl@likelion.org',     # 보내는 이메일 (settings에서 설정해서 작성안해도 됨)
+      to=[request.POST['email']],  # 받는 이메일 리스트
+    )
+    email.send()
   return redirect('home')
 
 @login_required(login_url='login')

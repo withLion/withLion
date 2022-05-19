@@ -27,11 +27,11 @@
       </h5>
       <h5 class="inline">
         {% if user == event.host %}
-        <span class="badge bg-secondary float-right">
+        <span class="badge bg-primary float-right">
         내 이벤트!
         </span>
         {% elif user in event.participant.all %}
-        <span class="badge bg-secondary float-right">
+        <span class="badge bg-primary float-right">
         참여중!
         </span>
         {% endif %}

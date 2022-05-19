@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import json
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +23,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$&cjyp$rl-fyma!$b*g01r418o-w$g4$vi%j_a5p$6b&kk6p%a'
+secret_file = os.path.join(BASE_DIR, 'secrets.json')
+with open(secret_file) as f:
+    secrets = json.loads(f.read())
+
+def get_secret(setting, secrets=secrets):
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the {} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
+
+
+SECRET_KEY = get_secret("SECRET_KEY")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -42,8 +57,39 @@ INSTALLED_APPS = [
     'crispy_forms',
     'LoginApp',
     'EventApp',
+    'rest_framework',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.IsAdminUser',
+    ],
+    'PAGE_SIZE': 10
+}
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+password_file = os.path.join(BASE_DIR, 'password.json')
+with open(password_file) as f:
+    passwords = json.loads(f.read())
+
+def get_password(setting, secrets=passwords):
+    try:
+        return passwords[setting]
+    except KeyError:
+        error_msg = "Set the {} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
+
+PASSWORD_MAIL = get_password("password_KEY")
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'toyoalsrl@likelion.org' # ex) bum752@gmail.com
+EMAIL_HOST_PASSWORD = PASSWORD_MAIL # ex) P@ssw0rd
+SERVER_EMAIL = 'toyoalsrl@likelion.org' # ex) bum752@gmail.com
+DEFAULT_FROM_MAIL = 'withLion' # ex) bum752
 
 #MARKDOWNX_MARKDOWN_EXTENSIONS = [
 #    'markdown.extensions.codehilite',

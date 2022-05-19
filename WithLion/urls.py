@@ -14,13 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path#, include
+from django.urls import path, re_path#, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required
 from EventApp.views import *
 from EventApp.functions import *
 from LoginApp.views import login, logout
+from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
   path('admin/', admin.site.urls),
@@ -54,8 +55,9 @@ urlpatterns = [
   #user email
   path('update_email/', updateEmail, name='updateEmail'),
   path('delete_email/', deleteEmail, name='deleteEmail'),
-
+  re_path(r'^send$', MailView.as_view()),
   #login
   path('login/', login, name='login'),
   path('logout/', logout, name='logout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns = format_suffix_patterns(urlpatterns)
